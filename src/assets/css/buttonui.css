@@ -1,0 +1,15 @@
+button[data-variant="primary"] {
+  @apply bg-cyan-700 hover:bg-cyan-500 text-white shadow-sm;
+}
+
+button[data-variant="secondary"] {
+  @apply bg-violet-700 hover:bg-violet-500 text-white shadow-sm;
+}
+
+button[data-variant="danger"] {
+  @apply bg-pink-700 hover:bg-pink-500 text-white shadow-sm;
+}
+
+button[data-variant="warning"] {
+  @apply bg-yellow-700 hover:bg-yellow-500 text-white shadow-sm;
+}
