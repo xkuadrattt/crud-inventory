@@ -20,7 +20,7 @@ export type ButtonUI = {
   children: React.ReactNode;
   style?: string;
   variant?: "primary" | "secondary" | "danger" | "warning";
-};
+} & React.ButtonHTMLAttributes<HTMLButtonElement>;
 
 export type ParagraphUI = {
   children: React.ReactNode;
@@ -46,13 +46,21 @@ export type DashboardLayoutType = {
 
 export type InputUI = {
   type: string;
+  pattern?: string;
+  id?: string;
   placeholder?: string;
   style?: string;
   name?: string;
   required?: boolean;
-};
+} & React.InputHTMLAttributes<HTMLInputElement>;
 
 export type AvatarProfileUi = {
   user: string;
+  role: string;
+};
+
+export type CardStaffType = {
+  user: string;
+  status: string;
   role: string;
 };

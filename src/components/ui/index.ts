@@ -4,4 +4,3 @@ export { default as SubHeading } from "./SubHeading";
 export { default as ButtonUi } from "./ButtonUi";
 export { default as ParagraphUi } from "./ParagraphUi";
 export { default as InputUi } from "./InputUi";
-export { default as LabelUi } from "./LabelUi";

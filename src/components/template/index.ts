@@ -1,7 +1,8 @@
 export { default as CardsCategories } from "./CardsData/CardsCategories";
 export { default as TableProducts } from "./TablesData/TableProducts";
 export { default as TableStaff } from "./TablesData/TableStaff";
-export { default as TableStockInHistory } from "./TablesData/TableStockInHistory";
-export { default as TableOutHistory } from "./TablesData/TableOutHistory";
-export { default as TableSupplier } from "./TablesData/TableSupplier";
-export { default as TableWarehouse } from "./TablesData/TableWarehouse";
+export { default as CardsSraff } from "./CardsData/CardsStaff";
+export { default as FormStaff } from "./FormInput/FormStaff";
+export { default as FormProduct } from "./FormInput/FormProduct";
+export { default as FormCategory } from "./FormInput/FormCategory";
+export { default as StockLow } from "./TablesData/StockLow";
