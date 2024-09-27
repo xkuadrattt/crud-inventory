@@ -1,4 +1,3 @@
-import React from "react";
 import { products } from "../../../data/product";
 import { HeadingLvOne } from "../../ui";
 
