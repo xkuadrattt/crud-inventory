@@ -64,3 +64,7 @@ export type CardStaffType = {
   status: string;
   role: string;
 };
+
+export type SidebarSlice = {
+  toggleMenu: boolean;
+};

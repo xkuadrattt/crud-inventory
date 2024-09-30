@@ -1,7 +1,10 @@
 import { configureStore } from "@reduxjs/toolkit";
+import sidebarReducer from "./slice/sidebarResposive";
 
 export const store = configureStore({
-  reducer: {},
+  reducer: {
+    sidebarMenu: sidebarReducer,
+  },
 });
 
 export type RootState = ReturnType<typeof store.getState>;
