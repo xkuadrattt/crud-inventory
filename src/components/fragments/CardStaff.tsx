@@ -6,7 +6,11 @@ const CardStaff = ({ user, role, status }: CardStaffType) => {
     <div className="bg-white rounded-lg shadow-md p-6 max-w-sm">
       <SubHeading style="mb-2">{user}</SubHeading>
       <ParagraphUi
-        style={status === "Inactive" ? `text-red-500` : `text-green-500`}
+        style={
+          status === "Inactive"
+            ? `text-red-300 bg-red-700 w-max px-1 rounded-md`
+            : `text-green-300 bg-green-700 w-max px-1 rounded-md`
+        }
       >
         {status}
       </ParagraphUi>

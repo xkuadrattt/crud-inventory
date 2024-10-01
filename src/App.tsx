@@ -1,9 +1,9 @@
-import { DashboardHomepage } from "./components/page";
+import { HeadingLvOne } from "./components/ui";
 
 function App() {
   return (
     <>
-      <DashboardHomepage />
+      <HeadingLvOne>homepage</HeadingLvOne>
     </>
   );
 }
