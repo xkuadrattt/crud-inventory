@@ -1,9 +1,4 @@
-import {
-  differenceInDays,
-  differenceInMonths,
-  differenceInYears,
-  parseISO,
-} from "date-fns";
+import { differenceInMonths, differenceInYears, parseISO } from "date-fns";
 
 export const workPeriod = (hireDate: string) => {
   const start = parseISO(hireDate);
