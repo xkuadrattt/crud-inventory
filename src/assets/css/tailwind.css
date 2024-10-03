@@ -8,6 +8,16 @@ body {
     sans-serif;
 }
 
+.custom-grid img:nth-child(2),
+.custom-grid img:nth-child(4) {
+  aspect-ratio: 9/16;
+}
+
+.custom-grid img:first-child,
+.custom-grid img:nth-child(3) {
+  aspect-ratio: 16/9;
+}
+
 @media (max-width: 639px) {
   .custom-grid {
     display: grid;

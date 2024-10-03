@@ -14,7 +14,7 @@ const FeatureGalery = () => {
       <img
         src={homepageResponsive}
         alt={homepageResponsive}
-        className="w-full max-w-[200px] lg:max-w-[250px] border border-cyan-700"
+        className="w-full max-w-[200px] lg:max-w-[250px] xl:max-w-[300px] border border-cyan-700"
       />
       <img
         src={productImg}
@@ -24,7 +24,7 @@ const FeatureGalery = () => {
       <img
         src={productResponsive}
         alt={productResponsive}
-        className="w-full max-w-[200px] lg:max-w-[250px] border border-cyan-700"
+        className="w-full max-w-[200px] lg:max-w-[250px] xl:max-w-[300px] border border-cyan-700"
       />
     </div>
   );
