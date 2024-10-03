@@ -10,7 +10,9 @@ const NavLinks = () => {
   return (
     <nav
       className={` bg-gray-100 p-6 w-64 min-h-screen border-r border-gray-300 shadow-lg transition-transform transform ${
-      isOpen ? `transtale-x-0 block` : `-translate-x-full hidden sm:block sm:translate-x-0`
+        isOpen
+          ? `transtale-x-0 block`
+          : `-translate-x-full hidden sm:block sm:translate-x-0`
       } sm:block`}
     >
       <h1 className="text-2xl font-bold mb-8 text-gray-800">Stockiesss</h1>
@@ -20,7 +22,7 @@ const NavLinks = () => {
             href="#"
             style="text-gray-700 hover:text-blue-600 transition-colors"
           >
-            Home
+            Beranda
           </LinkUi>
         </li>
         <li>
@@ -36,23 +38,7 @@ const NavLinks = () => {
             href="#"
             style="text-gray-700 hover:text-blue-600 transition-colors"
           >
-            Stock History
-          </LinkUi>
-        </li>
-        <li>
-          <LinkUi
-            href="#"
-            style="text-gray-700 hover:text-blue-600 transition-colors"
-          >
-            Suppliers
-          </LinkUi>
-        </li>
-        <li>
-          <LinkUi
-            href="#"
-            style="text-gray-700 hover:text-blue-600 transition-colors"
-          >
-            Warehouse
+            Kategori
           </LinkUi>
         </li>
       </ul>

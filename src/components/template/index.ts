@@ -6,3 +6,5 @@ export { default as FormStaff } from "./FormInput/FormStaff";
 export { default as FormProduct } from "./FormInput/FormProduct";
 export { default as FormCategory } from "./FormInput/FormCategory";
 export { default as StockLow } from "./TablesData/StockLow";
+export { default as CardServices } from "./CardsData/CardServices";
+export { default as CardsFooter } from "./CardsData/CardsFooter";

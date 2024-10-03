@@ -68,3 +68,12 @@ export type CardStaffType = {
 export type SidebarSlice = {
   toggleMenu: boolean;
 };
+
+export type HeroSectionProps = {
+  children: React.ReactNode;
+};
+
+export type CardFooterProps = {
+  title: string;
+  content: string;
+};
