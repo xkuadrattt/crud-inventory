@@ -10,10 +10,7 @@ const NavbarLandingPage = () => {
   };
 
   return (
-    <header
-      id="home"
-      className="fixed top-0 left-0 right-0 bg-white/80 backdrop-blur-sm"
-    >
+    <header className="fixed top-0 left-0 right-0 bg-white/80 backdrop-blur-sm">
       <div className="container px-4 sm:px-0">
         <div className="flex sm:flex-row justify-between items-center relative sm:static py-3 text-gray-600">
           <span className="text-xl font-bold">Stockiesss</span>

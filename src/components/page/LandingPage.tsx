@@ -18,7 +18,7 @@ const LandingPage = () => {
   return (
     <>
       <NavbarLandingPage />
-      <div className="container px-4 sm:px-0">
+      <div id="home" className="container px-4 sm:px-0">
         <HeroSection>
           <div className="flex flex-col gap-6 max-w-[748px]">
             <HeadlineHero />
