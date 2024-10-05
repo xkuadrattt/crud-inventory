@@ -3,6 +3,7 @@ import {
   DashboardHomepage,
   InputCategory,
   InputStaff,
+  LoginPage,
   PageCategory,
   ProductInput,
   StaffPage,
@@ -15,6 +16,14 @@ export const router = createBrowserRouter([
   {
     path: "/",
     element: <App />,
+  },
+  {
+    path: "/register",
+    element: <InputStaff />,
+  },
+  {
+    path: "/login",
+    element: <LoginPage />,
   },
   {
     path: "/dashboard",
@@ -40,10 +49,7 @@ export const router = createBrowserRouter([
         path: "inputcategory",
         element: <InputCategory />,
       },
-      {
-        path: "inputstaff",
-        element: <InputStaff />,
-      },
+
       {
         path: "category",
         element: <PageCategory />,

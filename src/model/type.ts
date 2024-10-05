@@ -19,7 +19,15 @@ export type HeadingSub = {
 export type ButtonUI = {
   children: React.ReactNode;
   style?: string;
-  variant?: "primary" | "secondary" | "danger" | "warning";
+  variant?:
+    | "primary"
+    | "secondary"
+    | "danger"
+    | "warning"
+    | "bordersecondary"
+    | "borderprimary"
+    | "borderwarning"
+    | "borderdanger";
 } & React.ButtonHTMLAttributes<HTMLButtonElement>;
 
 export type ParagraphUI = {

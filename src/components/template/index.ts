@@ -8,3 +8,4 @@ export { default as FormCategory } from "./FormInput/FormCategory";
 export { default as StockLow } from "./TablesData/StockLow";
 export { default as CardServices } from "./CardsData/CardServices";
 export { default as CardsFooter } from "./CardsData/CardsFooter";
+export { default as FormLogin } from "./FormInput/FormLogin";

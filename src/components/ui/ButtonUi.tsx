@@ -4,10 +4,16 @@ import { twMerge } from "tailwind-merge";
 const ButtonUi = ({ style, variant, children, ...props }: ButtonUI) => {
   // Menentukan class berdasarkan variant
   const variantClasses = {
-    primary: "bg-blue-600 text-white hover:bg-blue-700",
-    secondary: "bg-gray-200 text-gray-800 hover:bg-gray-300",
-    danger: "bg-red-600 text-white hover:bg-red-700",
-    warning: "bg-yellow-500 text-white hover:bg-yellow-600",
+    primary: "bg-cyan-700 text-white hover:bg-cyan-500",
+    secondary: "bg-purple-700 text-white hover:bg-purple-500",
+    danger: "bg-pink-700 text-white hover:bg-pink-500",
+    warning: "bg-yellow-700 text-white hover:bg-yellow-500",
+    bordersecondary:
+      "bg-white border border-purple-700 hover hover:bg-purple-200",
+    borderprimary: "bg-white border border-cyan-700 hover hover:bg-cyan-200",
+    borderwarning:
+      "bg-white border border-yellow-700 hover hover:bg-yellow-200",
+    borderdanger: "bg-white border border-pink-700 hover hover:bg-pink-200",
   };
 
   return (
