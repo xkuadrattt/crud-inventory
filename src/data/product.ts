@@ -1,16 +1,16 @@
 export type Product = {
-  id: number;
+  id: string;
   name: string;
   category: string;
   stock: number;
   warehouseLocation: string;
   price: number;
-  lastUpdated: string; // Format: 'DD-MM-YYYY'
+  lastUpdated: string;
 };
 
 export const products: Product[] = [
   {
-    id: 1,
+    id: "produk001",
     name: "Wireless Bluetooth Speaker",
     category: "Electronics",
     stock: 120,
@@ -19,7 +19,7 @@ export const products: Product[] = [
     lastUpdated: "2024-09-20",
   },
   {
-    id: 2,
+    id: "produk002",
     name: "Stainless Steel Water Bottle",
     category: "Home & Kitchen",
     stock: 85,
@@ -28,7 +28,7 @@ export const products: Product[] = [
     lastUpdated: "2024-09-18",
   },
   {
-    id: 3,
+    id: "produk003",
     name: "Yoga Mat",
     category: "Sports & Outdoors",
     stock: 200,
@@ -37,7 +37,7 @@ export const products: Product[] = [
     lastUpdated: "2024-09-15",
   },
   {
-    id: 4,
+    id: "produk004",
     name: "Wireless Mouse",
     category: "Computers",
     stock: 50,
@@ -46,7 +46,7 @@ export const products: Product[] = [
     lastUpdated: "2024-09-19",
   },
   {
-    id: 5,
+    id: "produk005",
     name: "Gaming Headset",
     category: "Electronics",
     stock: 75,

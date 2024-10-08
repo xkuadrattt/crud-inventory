@@ -85,3 +85,11 @@ export type CardFooterProps = {
   title: string;
   content: string;
 };
+
+export type FormData = {
+  firstName: string;
+  lastName: string;
+  email: string;
+  password: string;
+  confirmPassword: string;
+};

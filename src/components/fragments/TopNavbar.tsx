@@ -20,7 +20,7 @@ const TopNavbar = () => {
       />
 
       <div className="ml-auto">
-        <AvatarProfile user="Taufik" role="Developer" />
+        <AvatarProfile user="Sarah Connor" role="Admin" />
       </div>
     </header>
   );

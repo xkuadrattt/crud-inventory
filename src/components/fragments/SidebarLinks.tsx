@@ -1,6 +1,9 @@
 import { useSelector } from "react-redux";
-import { LinkUi } from "../ui";
 import { RootState } from "../../store/store";
+import { Link } from "react-router-dom";
+import { IoHomeOutline } from "react-icons/io5";
+import { AiOutlineProduct } from "react-icons/ai";
+import { BiCategory } from "react-icons/bi";
 
 const NavLinks = () => {
   const isOpen = useSelector(
@@ -18,28 +21,28 @@ const NavLinks = () => {
       <h1 className="text-2xl font-bold mb-8 text-gray-800">Stockiesss</h1>
       <ul className="flex flex-col gap-4">
         <li>
-          <LinkUi
-            href="#"
-            style="text-gray-700 hover:text-blue-600 transition-colors"
+          <Link
+            to="/dashboard"
+            className="flex gap-2 items-center text-gray-700 hover:text-blue-600 transition-colors"
           >
-            Beranda
-          </LinkUi>
+            <IoHomeOutline /> Beranda
+          </Link>
         </li>
         <li>
-          <LinkUi
-            href="#"
-            style="text-gray-700 hover:text-blue-600 transition-colors"
+          <Link
+            to="/dashboard/products"
+            className="flex gap-2 items-center text-gray-700 hover:text-blue-600 transition-colors"
           >
-            Products
-          </LinkUi>
+            <AiOutlineProduct /> Products
+          </Link>
         </li>
         <li>
-          <LinkUi
-            href="#"
-            style="text-gray-700 hover:text-blue-600 transition-colors"
+          <Link
+            to="/dashboard/category"
+            className="flex gap-2 items-center text-gray-700 hover:text-blue-600 transition-colors"
           >
-            Kategori
-          </LinkUi>
+            <BiCategory /> Kategori
+          </Link>
         </li>
       </ul>
     </nav>
