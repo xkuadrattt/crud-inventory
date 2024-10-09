@@ -3,9 +3,9 @@ import { Link } from "react-router-dom";
 const CtaHero = () => {
   return (
     <div className="flex gap-4">
-      <Link to={`/register`}>
+      <Link to={`/dashboard`}>
         <button className="px-2 py-1 rounded-md bg-cyan-700 hover:bg-cyan-600 text-white ">
-          Daftar Sekarang
+          Coba Sekarang
         </button>
       </Link>
 
