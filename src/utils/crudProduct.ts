@@ -1,7 +1,8 @@
 import localforage from "localforage";
-import { Product, products } from "../data/product";
+import { Product } from "../data/product";
 
 export const createProduct = async (payload: Product) => {
+  const products: Product[] = (await localforage.getItem("products")) || [];
   const productExist = products.find((item) => item.id === payload.id);
   if (productExist) {
     productExist.stock += Number(payload.stock);
@@ -9,5 +10,5 @@ export const createProduct = async (payload: Product) => {
     products.push(payload);
   }
 
-  await localforage.setItem("produk", products);
+  await localforage.setItem("products", products);
 };

@@ -1,14 +1,15 @@
 import React, { useState } from "react";
 import { ButtonUi, InputUi } from "../../ui";
 import { inputProductSchema } from "../../../validation/formproduct";
-import { toast, ToastContainer } from "react-toastify";
 import * as Yup from "yup";
 import { generatedDate } from "../../../utils/generatedDate";
 import { useNavigate } from "react-router-dom";
 import { createProduct } from "../../../utils/crudProduct";
 import { Product, products } from "../../../data/product";
+import { useToast } from "../../../context/ToastContext/ToastContext";
 
 const FormProduct = () => {
+  const { notify } = useToast();
   const navigate = useNavigate();
 
   const [formData, setFormData] = useState<Product>({
@@ -57,22 +58,18 @@ const FormProduct = () => {
       await createProduct(formData);
 
       clearForm();
-      console.log("berhasil");
-
+      notify("data berhasil diinput", "success");
       navigate("/dashboard/products");
-      toast.success("entry berhasil");
     } catch (error) {
       const errorCollection: { [key: string]: string } = {};
 
       if (error instanceof Yup.ValidationError) {
         error.inner.forEach((err) => {
           if (err.path) errorCollection[err.path] = err.message;
-          toast.error(err.message, {
-            autoClose: 3000,
-          });
+          notify(err.message, "error");
         });
       } else {
-        toast.error("galat tidak bisa diidentifikasi");
+        notify("Galat tidak bisa diidentifikasi", "error");
       }
 
       setErrors(errorCollection);
@@ -81,7 +78,6 @@ const FormProduct = () => {
 
   return (
     <div className="max-w-lg mx-auto p-6 bg-white shadow-lg rounded-lg">
-      <ToastContainer />
       <h2 className="text-2xl font-bold text-gray-800 mb-6">
         Product Registration
       </h2>

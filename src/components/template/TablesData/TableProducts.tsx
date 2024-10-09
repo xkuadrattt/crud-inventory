@@ -1,29 +1,42 @@
 import React, { useEffect, useState } from "react";
-import { products } from "../../../data/product";
 import { Link } from "react-router-dom";
 import { CiEdit } from "react-icons/ci";
 import { MdDeleteOutline } from "react-icons/md";
-import { ToastContainer } from "react-toastify";
+import localforage from "localforage";
+import { Product, products as tableProducts } from "../../../data/product";
 
 const TableProducts = () => {
   const [valueCategory, setValueCategory] = useState("");
-  const [filteredProduct, setFitleredProduct] = useState(products);
+  const [filteredProduct, setFitleredProduct] = useState<Product[]>([]);
+  const [products, setProducts] = useState<Product[]>([]);
 
   const getCategory = (e: React.ChangeEvent<HTMLSelectElement>) => {
     setValueCategory(e.target.value);
   };
 
   useEffect(() => {
-    setFitleredProduct(() => {
-      return products.filter((item) =>
-        item.category.toLowerCase().includes(valueCategory.toLowerCase())
-      );
-    });
-  }, [valueCategory]);
+    const fetchProduct = async () => {
+      const storedProducts = await localforage.getItem<Product[]>("products");
+
+      if (!storedProducts) {
+        await localforage.setItem("products", tableProducts);
+        setProducts(tableProducts);
+      } else {
+        setProducts(storedProducts);
+
+        setFitleredProduct(
+          storedProducts.filter((item) =>
+            item.category.toLowerCase().includes(valueCategory.toLowerCase())
+          )
+        );
+      }
+    };
+
+    fetchProduct();
+  }, [products, valueCategory]);
 
   return (
     <>
-      <ToastContainer />
       <div className="flex justify-between">
         <div className="flex gap-4 mb-8">
           <label htmlFor="filter">Filter By</label>
