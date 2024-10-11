@@ -6,6 +6,7 @@ import {
   LoginPage,
   PageCategory,
   ProductInput,
+  ProductUpdate,
   StaffPage,
   TableProduct,
 } from "../components/page";
@@ -36,6 +37,10 @@ export const router = createBrowserRouter([
       {
         path: "inputproduct",
         element: <ProductInput />,
+      },
+      {
+        path: "productupdate/:id",
+        element: <ProductUpdate />,
       },
       {
         path: "products",

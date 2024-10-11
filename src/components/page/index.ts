@@ -7,3 +7,4 @@ export { default as InputStaff } from "./InputStaff";
 export { default as PageCategory } from "./PageCategory";
 export { default as LandingPage } from "./LandingPage";
 export { default as LoginPage } from "./LoginPage";
+export { default as ProductUpdate } from "./ProductUpdate";

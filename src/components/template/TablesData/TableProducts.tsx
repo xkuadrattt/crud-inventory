@@ -1,21 +1,85 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { CiEdit } from "react-icons/ci";
+import { CiEdit, CiSquareChevLeft, CiSquareChevRight } from "react-icons/ci";
 import { MdDeleteOutline } from "react-icons/md";
 import localforage from "localforage";
 import { Product, products as tableProducts } from "../../../data/product";
+import { useToast } from "../../../context/ToastContext/ToastContext";
+import Swal from "sweetalert2";
 
 const TableProducts = () => {
   const [valueCategory, setValueCategory] = useState("");
-  const [filteredProduct, setFitleredProduct] = useState<Product[]>([]);
+  const [filteredProduct, setFilteredProduct] = useState<Product[]>([]);
   const [products, setProducts] = useState<Product[]>([]);
+  const [page, setPage] = useState(1);
+  const [itemsPerPage] = useState(5);
+
+  const { notify } = useToast();
 
   const getCategory = (e: React.ChangeEvent<HTMLSelectElement>) => {
     setValueCategory(e.target.value);
+    setPage(1);
+  };
+
+  const handlePaginationSelected = (payload: number) => {
+    if (
+      payload >= 1 &&
+      payload <= Math.ceil(filteredProduct.length / itemsPerPage) &&
+      payload !== page
+    ) {
+      setPage(payload);
+    }
+  };
+
+  const handleDelete = async (id: string) => {
+    try {
+      console.log("Menghapus produk dengan ID:", id);
+      const storedProducts: Product[] =
+        (await localforage.getItem("products")) || [];
+
+      const updatedProducts = storedProducts.filter(
+        (product) => product.id !== id
+      );
+      console.log("Produk setelah dihapus:", updatedProducts);
+
+      await localforage.setItem("products", updatedProducts);
+      setProducts(updatedProducts);
+      setFilteredProduct(
+        updatedProducts.filter((item) =>
+          item.category.toLowerCase().includes(valueCategory.toLowerCase())
+        )
+      );
+
+      notify("Produk berhasil dihapus", "success");
+    } catch (error) {
+      console.error("Error saat menghapus produk:", error);
+      notify("Gagal menghapus produk", "error");
+    }
+  };
+
+  const confirmationDelete = (id: string) => {
+    Swal.fire({
+      title: "Produk akan dihapus?",
+      text: "Kehilangan data tidak akan pernah kembali. Seperti dia",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Ya, hapus!",
+      cancelButtonText: "Batal",
+    }).then(async (result) => {
+      if (result.isConfirmed) {
+        try {
+          await handleDelete(id);
+        } catch (error) {
+          console.log(error);
+        }
+      }
+    });
   };
 
   useEffect(() => {
-    const fetchProduct = async () => {
+    const fetchProducts = async () => {
       const storedProducts = await localforage.getItem<Product[]>("products");
 
       if (!storedProducts) {
@@ -23,29 +87,33 @@ const TableProducts = () => {
         setProducts(tableProducts);
       } else {
         setProducts(storedProducts);
-
-        setFitleredProduct(
-          storedProducts.filter((item) =>
-            item.category.toLowerCase().includes(valueCategory.toLowerCase())
-          )
-        );
       }
+
+      const filtered =
+        storedProducts?.filter((item) =>
+          item.category.toLowerCase().includes(valueCategory.toLowerCase())
+        ) || [];
+      setFilteredProduct(filtered);
     };
 
-    fetchProduct();
-  }, [products, valueCategory]);
+    fetchProducts();
+  }, [valueCategory]);
+
+  console.log(filteredProduct);
 
   return (
     <>
-      <div className="flex justify-between">
+      <div className="flex justify-between flex-col mb-8 md:flex-row">
         <div className="flex gap-4 mb-8">
           <label htmlFor="filter">Filter By</label>
           <select name="filter" id="filter" onChange={getCategory}>
-            {products.map((item) => (
-              <option key={item.id} value={item.category}>
-                {item.category}
-              </option>
-            ))}
+            {Array.from(new Set(products.map((item) => item.category))).map(
+              (category, idx) => (
+                <option key={idx} value={category}>
+                  {category}
+                </option>
+              )
+            )}
           </select>
         </div>
         <div>
@@ -85,34 +153,43 @@ const TableProducts = () => {
             </tr>
           </thead>
           <tbody>
-            {filteredProduct.map((item, index) => (
-              <tr
-                key={index}
-                className="border-b last:border-none hover:bg-gray-50"
-              >
-                <td className="p-4 text-gray-800">{item.name}</td>
-                <td className="p-4 text-gray-800">{item.category}</td>
-                <td className="p-4 text-gray-800">{item.stock}</td>
-                <td className="p-4 text-gray-800">{item.price}</td>
-                <td className="p-4 text-gray-800">{item.warehouseLocation}</td>
-                <td className="p-4 text-gray-800">{item.lastUpdated}</td>
-                <td>
-                  <div className="flex gap-2 justify-center">
-                    <button className="p-1 hover:bg-purple-500 bg-purple-700 rounded-md text-white">
-                      <CiEdit />
-                    </button>
-                    <button className="p-1 hover:bg-pink-500 bg-pink-700 rounded-md text-white">
-                      <MdDeleteOutline />
-                    </button>
-                  </div>
-                </td>
-              </tr>
-            ))}
+            {filteredProduct
+              .slice(page * 5 - 5, page * 5)
+              .map((item, index) => (
+                <tr
+                  key={index}
+                  className="border-b last:border-none hover:bg-gray-50"
+                >
+                  <td className="p-4 text-gray-800">{item.name}</td>
+                  <td className="p-4 text-gray-800">{item.category}</td>
+                  <td className="p-4 text-gray-800">{item.stock}</td>
+                  <td className="p-4 text-gray-800">{item.price}</td>
+                  <td className="p-4 text-gray-800">
+                    {item.warehouseLocation}
+                  </td>
+                  <td className="p-4 text-gray-800">{item.lastUpdated}</td>
+                  <td>
+                    <div className="flex gap-2 justify-center">
+                      <Link to={`/dashboard/productupdate/${item.id}`}>
+                        <button className="p-1 hover:bg-purple-500 bg-purple-700 rounded-md text-white">
+                          <CiEdit />
+                        </button>
+                      </Link>
+                      <button
+                        onClick={() => confirmationDelete(item.id)}
+                        className="p-1 hover:bg-pink-500 bg-pink-700 rounded-md text-white"
+                      >
+                        <MdDeleteOutline />
+                      </button>
+                    </div>
+                  </td>
+                </tr>
+              ))}
           </tbody>
         </table>
 
         <div className="block sm:hidden">
-          {products.map((item, index) => (
+          {filteredProduct.slice(page * 5 - 5, page * 5).map((item, index) => (
             <div
               key={index}
               className="border-b p-2 flex flex-col gap-2 bg-gray-50 mb-4 rounded-lg"
@@ -124,9 +201,52 @@ const TableProducts = () => {
               <span>Price: {item.price}</span>
               <span>Price: {item.warehouseLocation}</span>
               <span>Last Update: {item.lastUpdated}</span>
+              <div className="flex gap-2 justify-center">
+                <Link to={`/dashboard/productupdate/${item.id}`}>
+                  <button className="p-1 hover:bg-purple-500 bg-purple-700 rounded-md text-white">
+                    <CiEdit />
+                  </button>
+                </Link>
+                <button
+                  onClick={() => confirmationDelete(item.id)}
+                  className="p-1 hover:bg-pink-500 bg-pink-700 rounded-md text-white"
+                >
+                  <MdDeleteOutline />
+                </button>
+              </div>
             </div>
           ))}
         </div>
+
+        {products.length > 0 && (
+          <div className="mt-8 flex justify-center items-center gap-1 [&>span]:px-2 [&>span]:cursor-pointer">
+            <span
+              className={page < Math.ceil(products.length / 5) ? `hidden` : ""}
+              onClick={() => handlePaginationSelected(page - 1)}
+            >
+              <CiSquareChevLeft />
+            </span>
+            {[...Array(Math.ceil(products.length / 5))].map((_, i) => (
+              <span
+                key={i}
+                className={
+                  page === i + 1
+                    ? `bg-cyan-500 text-white`
+                    : `bg-cyan-100 text-gray-600`
+                }
+                onClick={() => handlePaginationSelected(i + 1)}
+              >
+                {i + 1}
+              </span>
+            ))}
+            <span
+              className={page < Math.ceil(products.length / 5) ? `` : "hidden"}
+              onClick={() => handlePaginationSelected(page + 1)}
+            >
+              <CiSquareChevRight />
+            </span>
+          </div>
+        )}
       </div>
     </>
   );

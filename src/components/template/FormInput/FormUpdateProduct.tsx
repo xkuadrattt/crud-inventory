@@ -1,47 +1,52 @@
-import React, { useState } from "react";
+import { useState } from "react";
+import { useNavigate, useParams } from "react-router-dom";
+import localforage from "localforage";
 import { ButtonUi, InputUi } from "../../ui";
-import { inputProductSchema } from "../../../validation/formproduct";
-import * as Yup from "yup";
 import { generatedDate } from "../../../utils/generatedDate";
-import { useNavigate } from "react-router-dom";
-import { createProduct } from "../../../utils/crudProduct";
 import { Product } from "../../../data/product";
 import { useToast } from "../../../context/ToastContext/ToastContext";
-import localforage from "localforage";
 
-const FormProduct = () => {
+const FormUpdateProduct = () => {
+  const { id } = useParams<{ id: string }>();
   const { notify } = useToast();
   const navigate = useNavigate();
 
-  const [formData, setFormData] = useState<Product>({
-    id: "",
-    name: "",
-    category: "",
-    stock: 0,
-    warehouseLocation: "",
-    price: 0,
-    lastUpdated: generatedDate(),
+  const fetchProduct = async (productId: string): Promise<Product> => {
+    const storedProducts: Product[] =
+      (await localforage.getItem("products")) || [];
+    const product = storedProducts.find((item) => item.id === productId);
+    return (
+      product || {
+        id: "",
+        name: "",
+        category: "",
+        stock: 0,
+        warehouseLocation: "",
+        price: 0,
+        lastUpdated: generatedDate(),
+      }
+    );
+  };
+
+  const [formData, setFormData] = useState<Product>(() => {
+    const initialData: Product = {
+      id: "",
+      name: "",
+      category: "",
+      stock: 0,
+      warehouseLocation: "",
+      price: 0,
+      lastUpdated: generatedDate(),
+    };
+
+    if (id) {
+      fetchProduct(id).then((data) => setFormData(data));
+    }
+
+    return initialData;
   });
 
-  const [errors, setErrors] = useState<{ [key: string]: string }>();
-
-  const handleChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
-
-    if (name === "id") {
-      const storedProducts: Product[] =
-        (await localforage.getItem("products")) || [];
-      const productExist = storedProducts.find((item) => item.id === value);
-
-      if (productExist) {
-        setFormData({ ...formData, ...productExist });
-      } else {
-        setFormData({ ...formData, id: value });
-      }
-    } else {
-      setFormData({ ...formData, [name]: value });
-    }
-  };
+  const [errors, setErrors] = useState<{ [key: string]: string }>({});
 
   const clearForm = () => {
     setFormData({
@@ -54,37 +59,49 @@ const FormProduct = () => {
     });
   };
 
-  const handleSubmit = async (e: React.SyntheticEvent) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    setFormData({ ...formData, [name]: value });
+    setErrors((prev) => ({ ...prev, [name]: "" }));
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
+    if (!formData.id) {
+      setErrors((prev) => ({ ...prev, id: "ID Produk harus diisi" }));
+      return;
+    }
+
     try {
-      await inputProductSchema.validate(formData, { abortEarly: false });
-      await createProduct(formData);
+      const storedProducts: Product[] =
+        (await localforage.getItem("products")) || [];
+      const productIndex = storedProducts.findIndex(
+        (item) => item.id === formData.id
+      );
 
-      clearForm();
-      notify("data berhasil diinput", "success");
-      navigate("/dashboard/products");
-    } catch (error) {
-      const errorCollection: { [key: string]: string } = {};
+      if (productIndex !== -1) {
+        storedProducts[productIndex] = {
+          ...storedProducts[productIndex],
+          ...formData,
+          lastUpdated: generatedDate(),
+        };
 
-      if (error instanceof Yup.ValidationError) {
-        error.inner.forEach((err) => {
-          if (err.path) errorCollection[err.path] = err.message;
-          notify(err.message, "error");
-        });
+        await localforage.setItem("products", storedProducts);
+        clearForm();
+        notify("Produk berhasil diperbarui!", "success");
+        navigate("/dashboard/products");
       } else {
-        notify("Galat tidak bisa diidentifikasi", "error");
+        notify("Produk dengan ID tersebut tidak ditemukan.", "warning");
       }
-
-      setErrors(errorCollection);
+    } catch (error) {
+      notify(`ada sedikit kesalahan, ${error}`, "error");
     }
   };
 
   return (
     <div className="max-w-lg mx-auto p-6 bg-white shadow-lg rounded-lg">
-      <h2 className="text-2xl font-bold text-gray-800 mb-6">
-        Product Registration
-      </h2>
+      <h2 className="text-2xl font-bold text-gray-800 mb-6">Update Product</h2>
       <form className="space-y-6" onSubmit={handleSubmit}>
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
           <div>
@@ -101,8 +118,9 @@ const FormProduct = () => {
               placeholder="Id Product"
               value={formData.id}
               onChange={handleChange}
+              disabled
             />
-            {errors && <p className="text-sm text-pink-700">{errors.id}</p>}
+            {errors.id && <p className="text-sm text-pink-700">{errors.id}</p>}
           </div>
 
           <div>
@@ -120,7 +138,9 @@ const FormProduct = () => {
               value={formData.name}
               onChange={handleChange}
             />
-            {errors && <p className="text-sm text-pink-700">{errors.name}</p>}
+            {errors.name && (
+              <p className="text-sm text-pink-700">{errors.name}</p>
+            )}
           </div>
         </div>
 
@@ -205,11 +225,22 @@ const FormProduct = () => {
 
         <div className="flex justify-end gap-4 mt-6">
           <ButtonUi type="submit" variant="primary">
-            Submit
+            Update Product
           </ButtonUi>
           <button
             type="reset"
             className="px-2 py-1 border border-purple-700 hover:bg-purple-200 rounded-md"
+            onClick={() =>
+              setFormData({
+                id: "",
+                name: "",
+                category: "",
+                stock: 0,
+                warehouseLocation: "",
+                price: 0,
+                lastUpdated: generatedDate(),
+              })
+            }
           >
             Reset
           </button>
@@ -218,4 +249,5 @@ const FormProduct = () => {
     </div>
   );
 };
-export default FormProduct;
+
+export default FormUpdateProduct;
