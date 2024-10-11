@@ -1,6 +1,6 @@
-export { default as LinkUi } from "./LinkUi";
-export { default as HeadingLvOne } from "./HeadingLvOne";
-export { default as SubHeading } from "./SubHeading";
-export { default as ButtonUi } from "./ButtonUi";
-export { default as ParagraphUi } from "./ParagraphUi";
-export { default as InputUi } from "./InputUi";
+export { default as LinkUi } from "./LinkUi.tsx";
+export { default as HeadingLvOne } from "./HeadingLvOne.tsx";
+export { default as SubHeading } from "./SubHeading.tsx";
+export { default as ButtonUi } from "./ButtonUi.tsx";
+export { default as ParagraphUi } from "./ParagraphUi.tsx";
+export { default as InputUi } from "./InputUi.tsx";
